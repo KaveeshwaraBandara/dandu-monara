@@ -1,0 +1,141 @@
+# Raw pxh> output — Lab 00, 2026-10-07
+# PX4 v1.17.0 SITL, gz_x500, vehicle on the ground
+# Commands: uorb top · listener vehicle_local_position · param show MPC_XY_VEL_MAX
+
+update: 1s, topics: 122, total publications: 6830, 553.2 kB/s
+TOPIC NAME                          INST #SUB RATE #Q SIZE
+actuator_armed                         0   18    2  1   16
+actuator_controls_status_0             0    1    2  1   24
+actuator_motors                        0    4  250  1   72
+actuator_outputs                       0    4  250  1   80
+battery_status                         0    8  100  1  168
+config_overrides                       0    1    2  4   16
+control_allocator_status               0    3  125  1   56
+cpuload                                0    5    1  1   16
+ekf2_timestamps                        0    2  250  1   24
+esc_status                             0   10  250  1  336
+estimator_aid_src_baro_hgt             0    1   17  1   64
+estimator_aid_src_gnss_hgt             0    1   30  1   64
+estimator_aid_src_gnss_pos             0    1   30  1   96
+estimator_aid_src_gnss_vel             0    1   30  1  120
+estimator_aid_src_gravity              0    1  125  1  120
+estimator_aid_src_mag                  0    1   14  1  120
+estimator_baro_bias                    0    1   17  1   40
+estimator_event_flags                  0    1    1  1   40
+estimator_gps_status                   0    1   30  1   40
+estimator_innovation_test_ratios       0    1  125  1  144
+estimator_innovation_variances         0    1  125  1  144
+estimator_innovations                  0    1  125  1  144
+estimator_sensor_bias                  0    8    1  1  120
+estimator_states                       0    1  125  1  216
+estimator_status                       0    7  125  1  136
+estimator_status_flags                 0    3    1  1  104
+failsafe_flags                         0    2    2  1   96
+failure_detector_status                0    2    2  1   24
+geofence_result                        0    1    4  1   16
+navigator_status                       0    2    2  1   16
+position_setpoint_triplet              0    8   21  1  248
+rate_ctrl_status                       0    1  250  1   24
+sensor_accel                           0    6  250  8   48
+sensor_baro                            0    6   50  4   32
+sensor_combined                        0    2  250  1   48
+sensor_gps                             0    5   31  1  152
+sensor_gyro                            0    7  250  8   48
+sensor_mag                             0    3  100  4   40
+sensor_preflight_mag                   0    1  100  1   16
+sensors_status_imu                     0    2  250  1   96
+system_power                           0    3  100  1   48
+telemetry_status                       0    2    2  1   88
+telemetry_status                       1    2    2  1   88
+telemetry_status                       2    2    1  1   88
+telemetry_status                       3    2    1  1   88
+trajectory_setpoint                    0    3   50  1   64
+vehicle_acceleration                   0    2  250  1   32
+vehicle_air_data                       0   14   17  1   40
+vehicle_angular_velocity               0   11  250  1   40
+vehicle_angular_velocity_groundtruth   0    1   50  1   40
+vehicle_attitude                       0   18  250  1   56
+vehicle_attitude_groundtruth           0    1   50  1   56
+vehicle_attitude_setpoint              0    7  125  1   40
+vehicle_constraints                    0    2   50  1   24
+vehicle_control_mode                   0   21    2  1   24
+vehicle_global_position                0   11  125  1   72
+vehicle_global_position_groundtruth    0    1   31  1   72
+vehicle_gps_position                   0   15   31  1  152
+vehicle_imu                            0    5  250  1   64
+vehicle_imu_status                     0    8   10  1  136
+vehicle_land_detected                  0   19    1  1   24
+vehicle_local_position                 0   40  125  1  192
+vehicle_local_position_groundtruth     0    1   50  1  192
+vehicle_local_position_setpoint        0    8  125  1   64
+vehicle_magnetometer                   0    4   14  1   40
+vehicle_odometry                       0    2  125  1  112
+vehicle_rates_setpoint                 0    5  250  1   40
+vehicle_status                         0   56    2  1   80
+vehicle_thrust_setpoint                0    7  250  1   32
+vehicle_torque_setpoint                0    3  250  1   32
+yaw_estimator_status                   0    1  125  1  112
+
+pxh> listener vehicle_local_position
+
+TOPIC: vehicle_local_position
+ vehicle_local_position
+    timestamp: 266828000 (0.004000 seconds ago)
+    timestamp_sample: 266828000 (0 us before timestamp)
+    ref_timestamp: 4744000
+    ref_lat: 47.397971
+    ref_lon: 8.546163
+    x: -0.03889
+    y: 0.02365
+    z: -0.01430
+    delta_xy: [-0.04893, 0.02288]
+    delta_z: -0.23001
+    vx: -0.00084
+    vy: -0.00071
+    vz: 0.00072
+    z_deriv: 0.00710
+    delta_vxy: [-0.03770, 0.00405]
+    delta_vz: 0.03750
+    ax: -0.00426
+    ay: 0.00104
+    az: -0.00307
+    heading: 1.67649
+    heading_var: 0.02987
+    unaided_heading: -0.00134
+    delta_heading: -0.00238
+    tilt_var: 0.00007
+    ref_alt: 0.22998
+    dist_bottom: 0.01000
+    dist_bottom_var: 0.00010
+    delta_dist_bottom: -0.23001
+    eph: 0.15122
+    epv: 0.16607
+    evh: 0.08629
+    evv: 0.05389
+    vxy_max: inf
+    vz_max: inf
+    hagl_min: inf
+    hagl_max_z: inf
+    hagl_max_xy: inf
+    xy_valid: True
+    z_valid: True
+    v_xy_valid: True
+    v_z_valid: True
+    xy_reset_counter: 5
+    z_reset_counter: 2
+    vxy_reset_counter: 4
+    vz_reset_counter: 2
+    heading_reset_counter: 2
+    heading_good_for_control: True
+    xy_global: True
+    z_global: True
+    dist_bottom_valid: False
+    dist_bottom_reset_counter: 2
+    dist_bottom_sensor_bitfield: 0
+    dead_reckoning: False
+
+pxh> param show MPC_XY_VEL_MAX
+Symbols: x = used, + = saved, * = unsaved
+x   MPC_XY_VEL_MAX [631,1100] : 12.0000
+
+ 1003/1920 parameters used.
