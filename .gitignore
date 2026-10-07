@@ -1,0 +1,22 @@
+# ROS 2 / colcon
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.ipynb_checkpoints/
+
+# PX4 flight logs: keep locally; attach curated ones to GitHub Releases
+logs/**
+!logs/.gitkeep
+*.ulg
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
