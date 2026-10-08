@@ -30,42 +30,46 @@ attach_session() {
   fi
 }
 
-# Print every descendant PID of a process (children, grandchildren, ...).
-descendants() {
-  local child
-  for child in $(pgrep -P "$1"); do
-    echo "${child}"
-    descendants "${child}"
+# Gazebo processes launched by PX4 SITL.
+# PX4 starts the Gazebo server and GUI with '&' from rcS, which it runs via system("/bin/sh ...").
+# That shell exits after startup, so Gazebo is re-parented and survives PX4. Every process the
+# SITL build target starts inherits PX4_SIM_MODEL, which is how we tell them apart from any
+# other Gazebo you might be running.
+px4_gz_pids() {
+  local pid
+  for pid in $(pgrep -f "gz sim"); do
+    if tr '\0' '\n' < "/proc/${pid}/environ" 2>/dev/null | grep -q '^PX4_SIM_MODEL='; then
+      echo "${pid}"
+    fi
   done
+}
+
+kill_px4_gz() {
+  local pids
+  mapfile -t pids < <(px4_gz_pids)
+  if (( ${#pids[@]} > 0 )); then
+    echo ">> Stopping PX4's Gazebo processes:"
+    ps -o pid=,args= -p "$(IFS=,; echo "${pids[*]}")"
+    kill "${pids[@]}" 2>/dev/null || true
+    sleep 1
+    mapfile -t pids < <(px4_gz_pids)
+    if (( ${#pids[@]} > 0 )); then
+      kill -9 "${pids[@]}" 2>/dev/null || true
+    fi
+  fi
 }
 
 stop_sim() {
   if tmux has-session -t "${SESSION}" 2>/dev/null; then
-    # PX4 starts the Gazebo server and GUI in the background and does not stop them itself,
-    # so remember everything launched from the PX4 pane before shutting it down.
-    local pane_pid sim_pids pid
-    pane_pid="$(tmux display-message -p -t "${SESSION}:sim.{top}" '#{pane_pid}')"
-    mapfile -t sim_pids < <(descendants "${pane_pid}")
-
     echo ">> Asking PX4 to shut down cleanly"
     tmux send-keys -t "${SESSION}:sim.{top}" "shutdown" C-m
     sleep 3
     tmux kill-session -t "${SESSION}"
     echo ">> tmux session '${SESSION}' closed"
-
-    for pid in "${sim_pids[@]}"; do
-      kill "${pid}" 2>/dev/null || true
-    done
   else
     echo ">> No '${SESSION}' session running"
   fi
-
-  # Anything still running wasn't started by this session (e.g. an orphan from an earlier run).
-  if pgrep -f "gz sim" >/dev/null; then
-    echo ">> Gazebo processes still running (not started by this session):"
-    pgrep -af "gz sim"
-    echo "   Stop them with: kill <PID>"
-  fi
+  kill_px4_gz
   echo ">> Stopped."
 }
 
@@ -81,6 +85,10 @@ MODEL="${1:-gz_x500}"
 if tmux has-session -t "${SESSION}" 2>/dev/null; then
   attach_session
 fi
+
+# A Gazebo left over from an earlier run would make PX4 attach to the old world
+# ("gazebo already running world") and skip starting the GUI. Start clean instead.
+kill_px4_gz
 
 SIM_CMD="make px4_sitl ${MODEL}"
 if [[ -n "${HEADLESS:-}" ]]; then
